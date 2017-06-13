@@ -1,0 +1,29 @@
+COMPONENT WORKFLOW
+
+
+1. Create the component with your React.createClass.
+    A. Require React
+    B. Add module.exports
+    c. create the class, Double bracket, then render, then return
+    d. if the component has no children, you can use function(props) instead of creating a class.
+2. Add an alias to webpack.config with the path
+3. Require it in your app.jsx
+4. If it's a default component, place it in indexRoute
+5. If it's not a default component, place it in a child route under Main
+    A. Decide a name for the route that matches the component name
+    B. Make sure your main includes this.props.children
+    C. Make sure you link to it somewhere with the Link tag
+        1. Link tags allow you to set event listeners to see if that's the page you're on, and set an active style
+        2. You can check if a link is active by saying activeClassName = "active"
+        3. You can specify inline CSS in React with activeStyle ={{fontWeight: "bold"}}
+        4. You must use camelCase in react, no dashes allowed unless they're lodashes.
+    D. In Main.jsx, include the following:     var {Link, IndexLink} = require("react-router")
+        1. Link is used for non-default links
+        2. IndexLink is used for links that come up as the default route
+        3. Make sure all routes and index routes are within a route with path = "/", unless you want a reload in between.
+6. If you intend to pass in any props:
+    A. start by creating a getDefaultProps method, which is a function() that returns a {} containing key-value-pairs.
+    B. create a propTypes:{} object, setting the default types of the getDefaultProps items to React.PropTypes.(type of var)
+        ***The object keeps bugging out, so I've been using propTypes: function(){return {key: value}} instead.
+    C. To destructure any props you're going to use in the render, put var {(propertyName)} = this.props
+    D. To call a method on any props, make sure to say this.(METHOD)(What to run the method on).

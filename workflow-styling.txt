@@ -1,0 +1,43 @@
+THINGS TO INSTALL --save-dev
+    1. css-loader
+    2. style-loader
+    3. jquery
+    4. foundation-sites
+    5. script-loader
+
+THINGS TO MODIFY IN webpack.config
+    1. Change the entry point to an array with your app.jsx, jquery/dist/jquery.min.js, and foundation-sites/dist/foundation.min.js
+        a. app.jsx must go last
+        b. to invoke script-loader on the min.js files, add "script!" before each one.
+    2. Under entry, add externals object{}
+        a. inside, put jquery: "jQuery", so you can access the jquery module by using the name "jQuery".
+
+    3. Under externals, add a plugins array[]
+        a. Inside, place new webpack.providePlugin({})
+        b. Inside of this. tell webpack that $ stands for "jquery", and "jQuery" also stands for "jquery"
+
+    4. Load in webpack utilities so you can use the $ for jquery's abbreviation
+        1. use var webpack = require("webpack")
+
+THINGS TO MODIFY IN app.js
+    1. Load in the css with foundation, require("foundation-sites/dist/foundation.min.css")
+    2. Add a style! and  css! tag on the front to use the special css-loader thing.
+    3. Use your jquery to start foundation with $(document).foundation() method.
+
+USING STYLE CLASSES
+    1. Make sure that you use className rather than class when specifying css classes, because class is reserved in jsx.
+    2. If something bugs out, use the chrome element selector to figure out what the selector is, then use that selector in your css to override.
+    3. IMPORTANT: Remember to check the foundation docs for stuff you can change.
+
+THE FILE SYSTEM
+    1. Don't use just app.scss, you want to break them into pieces with _ at the start of the filename, to show that it's partial.
+    2. In "styles" make a base and a components directory
+    3. In "base", make an scss file for the variables you're going to use for colors and margins and stuff
+    4. In "components" make an scss file for each component to link the base variables to it
+    5. import the files with @import "base/variables", which is ruby syntax(?)
+    6. Any time you want to style a new component, you need a new @import in the app.scss, and a new _(component named).scss
+    7. You can define any $variables to use in any other scss file in the base/variables.scss file.
+
+FOUNDATION USEFUL STUFF
+    To use the grid system, place "row" on a wrapper div, and "column" on the inner divs
+    Use small-centered to center it unconditionally, then medium- and large- follow by how many grid sectors you want to use.

@@ -1,0 +1,31 @@
+PART 1 - Make an onStatusChange() function
+    Make a method called onStatuschange, which is a React built-in, call it an anonymous function
+    Pass in the argument newStatus, since you'll need to know the status before you decide what to do.
+    For each component that needs the click handler, set the onClick = prop for them equal to this.(method name)(new status)
+    The onClick can return either a value or a function.
+
+PART 2 - Use a currying pattern to return a differerent function depending on what gets passed in - don't just return a value
+    In the onStatuschange method, make it return a new arrow function, which returns this.props.onStatusChange(newProps)
+    You are basically pointing the onClick property to a local method called onStatusChange, 
+        but you have to establish functional context for it, or else onClick will mistake it for a prop rather than a method
+            which means you'll probably need to pass in onStatusChange from the parent.
+    Also, make sure to specify that onStatusChange is a React.propTypes.func.isRequired, since it's a function and required.
+
+PART 3 - Go to the parent component of the clicked element and make it change the state.
+    In the render function:
+        Render your new component, but pass in a prop onStatusChange = {this.handleStatusChange}
+        Also, pull the current status off of {this.state} with destructuring syntax, and pass that in as a prop too
+    Make a new function called handleStatusChange(triggered by onStatusChange), which is a function of newStatus:
+        In it, just set the state to the new status
+        This will trigger componentDidUpdate, which can start or stop the clock.
+    For the clock, in the render function:
+        create a function that conditionally displays the controls or the clock setting form:
+            If the clock is stopped, display the form with the handleSetCountdown as props, this changes the status to started
+                this also triggers componentDidUpdate
+            If the clock is not stopped, display the controls, with handleStatusChange as props, this listens for a change in status
+                this also triggers componentDidUpdate
+
+PART 4 - Use componentWillUnmount to make the clock turn off when you change tabs away, and componentWillMount when you change tabs to the clock.
+    These are companions to componentDidUnmount and componentDidMount, which fire AFTER mounting and unmounting, not before.
+    You can use componentWillUpdate(newProps, newState), which is the opposite of componentDidUpdate(oldProps, oldState)
+    You can also use componentWillReceiveProps, which fires the instant before the component is sent props.

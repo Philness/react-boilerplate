@@ -1,0 +1,69 @@
+DOING AN API CALL IN REACT WITHOUT CROWDING THE PAGE
+
+
+
+PART 1. Getting Started
+    A. File Structure setup
+        1. Add an api folder.
+        2. make a jsx file inside to handle the api, but don't do it all uppercase like a component.
+        3. Put the jsx file that handles the api into the webpack config
+        4. Require the alias for the jsx file in the component that does your state handling.
+
+    B. Axios library to simplify the api call so you don't have a 10 line ajax function or jquery
+        1. install using npm install axios --save
+        2. put a require statement in your jsx file, inside of the api directory.
+
+
+
+PART 2. Generate a URL
+    A. Start with the constant parts of your URL that you know will be the same every time.
+        1. use the const keyword before it.
+        2. By convention, name constants with uppercase/snake case names.
+        3. Remember to put http:// or https:// before it so it doesn't try to look in localhost for the api.
+
+
+
+PART 3. Export the URL to the parent component.
+    A. Make an object to export inside of module.exports
+
+    B. Inside the object, make a get function for whatever it is you're getting.
+        1. This is a good place to finish building the url by adding in more query strings on top of the constant.
+            a. You'll need to encode anything you pass with encodeURIComponent(URL piece), make a new variable for this job.
+            b. Inject it into the final URL with the bling-braces ${}.
+        2. Use the ES6 string marker with backtick (`) for variable injection with ${}.
+        3. Inject the constant URL from above first.
+        4. Put the &property=${variable name} for each modifyable thing in the backticks.
+    
+    C. Inside of the get function, call axios on the url.
+        1. use return axios.get(requestURL), this allows the .then here to chain with the .then in the state handling component.
+        2. Start a new promise with .then(function(response){success callback}, function(response){error callback})
+
+    D. Success callback
+        1. Check if reposnse.data.cod and response.data.message exist.  If so, throw a new Error per Part E.
+        2. Else, return the response.data.((The thing you're actually wanting to get from the JSON))
+    E. Error callback
+        1. throw a new Error on the response.data.message object
+
+
+
+PART 4. Call the function from part 3 in your component that does all the state handling.
+    A. Go inside of your handle function to do all of this.
+    B. Call the function with ((API MODULE NAME)).EXPORT FUNCTION NAME(data to be passed to the API)
+    C. Add a promise with .then(function(data returned from API){success callback}, function(errorMessage){error callback})
+        1. In the error callback, log or alert the error message that was thrown from the api module.
+        2. In the success callback, set the state using the data that was returned.
+            a. Before setting the state, put that = this; at the beginning of the handling function
+            b. When you set state, use that.setState instead of this.setState
+            c. Do this because "this" refers to the openWeather module, but "that" refers to your Weather component.
+
+
+PART 5. Creating a Loading indicator
+    A. Make a boolean in the ".getInitialState" return method called isLoading.  Set isLoading: false.
+    B. Make the isLoading true during an api call
+        1. Make sure to put isLoading: true under the ".handleSearch" method.
+        2. Pull (isLoading) out of the state along with everything else in the ".render" method.
+    C. Create a CONDITIONAL rendering.
+        1. change your Message rendering to the result of a function called {renderMessage()}
+        2. In the .renderMessage(), make 2 if/else branches
+            a. First branch returns the loading message if (isLoading) is true.
+            b. Second branch returns the temp and city if (message && temp) have been found.

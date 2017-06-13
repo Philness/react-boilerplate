@@ -1,0 +1,25 @@
+REGEX
+    Use str.match(regex) to make sure that a string consists only of the characters you want.
+    regex starts and ends with //, with a [] set, saying the string has to match what's inside.
+    By default it only matches one character, end it with a star to make it match more than one.
+    The ^ character says that the starting character also must match.
+    The $ character says that the ending character also must match.
+
+PARSEINT
+    Use parseint(string, base) to change a string into a number.
+    If no base is specified, the number will be parsed to base 10.
+    Any number starting with 0x will be parsed to base 16.
+    Make sure to use regex beforehand to make sure that what you're passing is parse-worthy.
+
+CLOCKS AND LIFECYCLE
+    A. Clock stopping and starting:
+        1. When setting the initial state, set the status to "stopped"
+        2. When the countdown is set in the handleSetCountdown, change the state.status to "started"
+    B. Using componentDidUpdate: function(oldProps, oldState)
+        1. You can compare the current state "this.state.status" to the old state with oldState.status
+        2. If they aren't the same, you can make it run the this.startTimer() method
+    C. The startTimer method:
+        1. start a new interval by setting this.timer = setInterval(CALLBACK(), MilliSeconds)
+        2. make a variable that finds the new amount of time
+        3. Update the state with the new amount of seconds, unless it's negative
+        4. There's no need to change anything else in ComponentDidUpdate, since any change in state is automatically rendered in the JSX.

@@ -1,0 +1,32 @@
+GIT COMMANDS
+    !!!Make sure re-run webpack BEFORE EACH COMMIT!!!
+
+    git init = start using git and begin tracking
+    git status = show which files are being tracked and which ones aren't.
+    .gitignore = a file in the project root directory that lists what git should always ignore.
+    git add = add a file to the save list, you have to use this for new files
+    git add . = to save all except what's in the gitignore.
+    git push = uploads your junk to github.
+    git commit -m 'message' = saves your stuff.
+    git commit -a -m = Adds any files on the save list, then asks for a message, but only works on modified 
+    git remote -v = shows all remote places the repository is being uploaded
+    git checkout = changes to a new branch
+    git checkout -b = creates a new branch and switches to it
+    git stash = rolls back changes since last push, but saves the changes
+    git stash pop = makes all the saved changes, preferably to the new branch.
+
+    To create a new repository, go to your github, click new repository, and follow the directions.
+
+HEROKU COMMANDS
+    heroku create = makes a heroku repository based on what you have uploaded.
+    git push heroku master = pushes the contents of your directory to heroku.
+    heroku open = actually opens the app in your default browser.
+
+DEPLOYING TO HEROKU
+    1. In package.json, under scripts, place a start property equal to the command you use to start the server, node server.js
+        a. This also allows you to use npm start to start the server.
+    2. In server.js, do the following:
+        a. create a constant PORT variable, equal to process.env.PORT or 3000.  3000 will be the default if there is no process.env.PORT
+        b. Change all occurances of port 3000 to the PORT variable.
+        c. Check if request.headers['x-forwarded-proto] is https, and if so redirect the response to "http://" + request.hostname + request.url
+        d. If it's not https, go to the next function. 

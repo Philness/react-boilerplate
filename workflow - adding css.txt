@@ -1,0 +1,12 @@
+PART 1 - GETTING STARTED
+
+A. Make a new app.css under the styles folder
+B. Add an alias in webpack linking to the file.
+C. Put style!css!(alias) in a require statement in the main app.jsx.
+
+PART 2 - ADDING SASS
+A. npm install sass-loader and node-sass
+B. Change all your extensions to .scss in webpack config and in the directories
+C. Make sure you add a !sass in your require statements in app.jsx
+
+

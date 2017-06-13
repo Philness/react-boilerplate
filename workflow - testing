@@ -1,0 +1,83 @@
+INSTALLING TESTING MODULES
+npm install the following with --save-dev:
+    karma: The test runner
+    karma-chrome-launcher: Allows karma to use chrome to run your tests
+    karma-mocha: Lets karma and mocha talk to each other and share methods
+    karma-mocha-reporter: Gives you that neat little pass/fail display in your terminal
+    karma-sourcemap-loader: Allows you to debug your jsx rather than your massive bundle.js file
+    karma-webpack: Lets karma and webpack talk to each other
+    mocha: Additional testing methods
+    expect: Still more testing methods
+    react-addons-test-utils: still more testing methods
+
+CONFIGURING KARMA
+    1. Make a new file in the root folder called karma.conf.js
+    2. Set module.exports equal to a function(config)
+    3. Do a config.set({}), which is a built-in method in karma
+    4. Inside of config.set({
+        browsers:['chrome'],   //which browser to use?
+        framework: ['mocha'],  //which testing library to use?
+        singleRun: true,  //run tests only once
+        files: ['app/tests/**/*.test.jsx'],  //Run all tests that end with .test.jsx in the test folder
+        preprocessors: {
+            'app/tests/**/*.test.jsx': ["webpack", "sourcemap"]  //make sure that it works with webpack, but doesn't look at bundle.js
+        },
+        reporters : ["mocha"],  //error&&success messages come from here
+        client:{
+            mocha:{
+                timeout:'5000'  //set a timeout if a test fails for a long time (5 s)
+            }
+        },
+        webpack: webpackConfig,  //point it to your webpack stuff
+        webpackServer:{         //no idea lol
+            noinfo:true
+        }
+    })
+    5. REMEMBER to put karma start next to test in package.json
+
+MAKING A NEW TEST FILE
+    1. Make a new file in the test directory
+    2. Require react, react-dom, expect, jQuery (as a $), and react-addons-test-utils.  ALSO, require any component you want to test.
+    3. To group the tests, start with describe(COMPONENT NAME, ()=>{step 4 inside here})
+    4. To write the test:
+        A. start with it("WHAT THE TEST SHOULD DO IN ENGLISH", as your first argument
+        B. add a function as the second argument, it can be an arrow function
+        C. In the function write an expect(something).toBe(result), and you can write more than one to test more thouroughly
+        D. A good first test is expect(<COMPONENT>).toExist() to see if it's being recognized at all.
+        E. Each Method should have its own describe section.
+    5. To create re-usable tests with React:
+        A. Start by writing an it-statement
+        B. Load in the component to test, let (new var name) = testUtils.renderIntoDocument(<COMPONENT /)
+            1. To pass in props, include (propertyName) = {value}, with braces.
+        C. actually write the test, the expect function should read (new var name).(method to test)(args)
+
+TESTING IFA COMPONENT'S STATE CHANGES WHEN IT SHOULD
+    1. Load in the component as in step 5B
+    2. call the method with (component).(handle method)(props to pass in)
+    3.
+
+TESTING TO SEE IF A COMPONENT GOT RENDERED
+    1. Load in the new component as in 5B
+    2. Find it in the DOM with a jQuery function, var $el =  $(ReactDOM.findDOMNode(new component))
+    3. To pull the value, make sure it has a css className attached to it first
+    4. Select the class whose text you want with $el.find(".class-name").text() or .value()
+        a. To find text within a button, you can use $targetButton  = $el.find("button:contains(TARGET TEXT)")
+        b. To expect that the test finds something with the target text, you can expect $targetButton.length to not be zero.
+    5. Write the expect function normally.
+
+TESTING TO SEE IF A FUNCTION GOT CALLED WHEN IT WAS SUPPOSED TO
+    1. Use expect to create a spy, use var spy = expect.createSpy()
+    2. Load in the component to test as in 5B, but
+        a. pass in a prop that matches the "onSet" function called in the child's "on" method
+        b. set that prop equal to your {spy}
+    3. Find your component in the DOM using step 2 in the previous section.
+    4. decide what value you'd like to simulate submitting by setting (component var).refs.(key).value equal to your value.
+    5. To run the simulation, use testUtils.Simulate.submit($el.find("form")[0]), but you can probably find it by ID, because jquery.
+    6. Write your expect function as expect(spy).toHaveBeenCalled()
+        a. the method toHaveBeenCalledWith() will also ensure that the value was passed in correctly.
+        b. the method toHaveNotBeenCalled() will ensure that your component's input validation is blocking the stuff that doesn't belong.
+
+FOR ASYNCHRONOUS TESTING
+    1. place a (done) argument in the describe function
+    2. inside of your asynch function, place a done() method
+    3. You will mostly be testing handle-set functions this way

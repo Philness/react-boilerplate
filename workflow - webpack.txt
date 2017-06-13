@@ -1,0 +1,46 @@
+Here are a few things you need.
+
+I. A server.js file in the root
+  a. Require Statements for libraries
+  b. Use statements for folders
+    1. Goes like app.use(express.static("public"))
+  c. A listen statement
+
+II. An index.html file in the public directory
+  a. A div with the id "app"
+  b. A script tag for webpack's bundle.js, not the app.js
+
+III. An app.js file that will be webpacked
+  a. A require statment that points to some component(s)
+    1. make sure you made your components with capital letters
+    2. The directory is ./components/<component name>
+    3. For React and ReactDOM, you need "react" and "react-dom"
+  b. A line that actually runs the function in the component. (not capital)
+
+IV. A component that gets pointed to
+  a. A function to be run.
+  b. A module.exports = <name to pass> at the end
+
+
+V. Webpack stuff
+  a. A webpack.config.js file with module.exports = {}
+    1. An entry point
+    2. An output point = {} with path: __dirname and filename: your location
+    3. A resolve property = {}, with extensions: ['', '.js', '.jsx'], so webpack can see them.
+      a) Inside the resolve property, place root: __dirname to specify the root location,
+      b) Also, place an an object called alias:{}
+      c) Inside of alias, you can specify a <component name> : '<path>' for your react components.
+    4. A module property = {}
+      a) Contains loaders: [], which is an array of {}
+      b) Each {} has loader, query, test, and exclude property
+        1) loader property = <loader name>, such as babel-loader
+        2) query property = {}
+          (a) The query has presets = [], which contains your transpilers
+          (b) We use react and es2015 in the array
+        3) test property is a regular expression that searches for files ending in .jsx
+        4) exclude property is a regular expression, put in folders to exclude
+          (a) leave out node modules, since those are only used by you
+          (b) Leave out bower components, but I don't know why
+
+
+  b. Run webpack from the terminal now!

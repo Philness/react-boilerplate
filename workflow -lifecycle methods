@@ -1,0 +1,14 @@
+RELEVANT LIFE CYCLE METHODS FOR ANYTHING THAT HANDLES STATE
+
+setInitialState({key:value}) === sets an initial state
+
+componentWillMount(function()=>{}) === Does some function right before a component is added to the DOM
+componentWillUnmount(function()=>{}) === Does some function right before a component is removed from the DOM
+componentDidMount(function()=>{}) === Does some function right after a component is added to the DOM
+
+componentWillUpdate = function(newProps, newState){} === Decides what to do with props/state right before they're updated.
+componentDidUpdate = function(oldProps, oldState){} === Decides what to do right after props/state were updated.
+componentWillReceiveProps = function() === Does some function the instant that props are passed into a component
+
+onStatusChange(()=>{}) === Do something when status changes inside of a display component, such as modify props
+handleStatusChange(()=>{}) === Do something to change the state when the props are passed back to the state controller.
